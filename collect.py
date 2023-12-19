@@ -3,7 +3,7 @@ import pandas as pd
 from chess_request import get_games
 from json_normalize import json_normalize
 
-email    = 'your_email@example.com'
+email    = 'your_email@example.com' # this email should be an environment variable. 
 url      = "https://api.chess.com/pub/player/morpha_21/games/2023/08"
 
 game_json = get_games(url, email)['games']

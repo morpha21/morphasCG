@@ -16,4 +16,5 @@ I'm planning to use at least the following tools to do it:
 I may or may not use more tools in the future, or fewer tools, or substitute some of them 
 for more adequate alternatives as I gain more knowledge.
 
-
+## Current status: 
+collect.py makes a requisition to chess.com's API and turns it into a Pandas DataFrame.
