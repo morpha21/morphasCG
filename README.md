@@ -17,4 +17,5 @@ I may or may not use more tools in the future, or fewer tools, or substitute som
 for more adequate alternatives as I gain more knowledge.
 
 ## Current status: 
-collect.py makes a requisition to chess.com's API and turns it into a Pandas DataFrame.
+- collect.py makes a requisition to chess.com's API and turns it into a Pandas DataFrame.
+- there's a docker-compose.yaml and a Dockerfile to set up a MySQL database, getting environment variables from not committed .env file. 
