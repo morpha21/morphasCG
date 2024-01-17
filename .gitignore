@@ -1,2 +1,6 @@
 __pycache__/
 .env
+
+python_scripts/extract/__pycache__/
+python_scripts/transform/__pycache__/
+python_scripts/load/__pycache__/
