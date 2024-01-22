@@ -20,4 +20,6 @@ with open(".email", 'r') as email_file:
 df.columns = [col.replace(".","_").replace("@","") for col in df.columns]
 
 
-print(df)
+a = df['rules'].unique()
+
+print (a)
