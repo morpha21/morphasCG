@@ -1,13 +1,12 @@
 """
-
 this module only provides functions to request data from a chess API
-
 """
+
 
 import requests as rq
 
 
-def get_games(url, email):
+def get_games(url: str, email: str) -> dict:
   """gets chess data from chess.com"""
   print("requesting game data... ")
   headers = {'User-Agent': email}
