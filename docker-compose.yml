@@ -1,0 +1,30 @@
+services:
+  mysql:
+    env_file:
+      - mysql.env
+    build:
+      context: ./mysql
+      dockerfile: database.Dockerfile
+    ports:
+      - ${mysql_port}:8128
+    command: --default-authentication-plugin=caching_sha2_password --port=3307
+    restart: always
+    volumes:
+      - ./data/:/docker-entrypoint-initdb.d
+    secrets:
+      - mysql_port
+  mysql2:
+    env_file:
+      - mysql2.env
+    build:
+      context: ./mysql2
+      dockerfile: database.Dockerfile
+    ports:
+      - "${MYSQL_PORT}:8128"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./data/:/docker-entrypoint-initdb.d
+secrets:
+  mysql_port:
+    file: ./mysql_port.env
