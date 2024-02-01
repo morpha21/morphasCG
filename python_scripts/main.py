@@ -1,9 +1,9 @@
 import pandas as pd
+from json_normalize import json_normalize
 
 
 from extract.chess_request import get_games
-from json_normalize        import json_normalize
-
+import transform.chess_transform as ct
 
 
 # maybe getting user from file?
@@ -17,9 +17,15 @@ with open(".email", 'r') as email_file:
 	df        = pd.DataFrame(list(json_normalize(game_json)))
 
 
-df.columns = [col.replace(".","_").replace("@","") for col in df.columns]
+df = ct.adequate(df)
+
+for i in df.columns:
+	print(i)
+
+print()
+print(df.iloc[:, 15:20])
 
 
-a = df['rules'].unique()
 
-print (a)
+
+
