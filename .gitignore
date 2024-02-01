@@ -6,3 +6,4 @@ python_scripts/load/__pycache__/
 
 python_scripts/.email
 **/*.env
+python_scripts/extract/.email
