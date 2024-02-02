@@ -11,7 +11,7 @@ email = ""
 
 
 with open("extract/.email", 'r') as email_file:
-	email	  = email_file.read().strip()
+	email = email_file.read().strip()
 
 
 df = request_games(year, month, user, email)

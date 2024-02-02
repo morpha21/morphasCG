@@ -1,7 +1,7 @@
 services:
   mysql:
     env_file:
-      - mysql.env
+      - ./mysql.env
     build:
       context: ./mysql
       dockerfile: database.Dockerfile

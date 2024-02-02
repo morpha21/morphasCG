@@ -1,18 +1,29 @@
 import mysql.connector
 
-from pandas import DataFrame
 
-def connect(df: DataFrame, host_name: str, user_name: str, user_password: str, db_name: str):
-	mydb = mysql.connector.connect(
-		host = host_name,
-		user = user_name,
-		password = user_password,
-		database = db_name)
-	mycursor = mydb.cursor()
-	mycursor.execute()
 
-	query = "CREATE TABLE customers (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), address VARCHAR(255))"
 
-	for column in df.columns:
-	
-	mycursor.execute()
+
+with open('../../mysql.env', 'r') as file:
+	content = file.read().split('\n')
+
+with open('../../.env', 'r') as file:
+	port = file.read().split('\n')[0].split('=')[1]
+
+content = [c.split('=')[1] for c in content if c != '']
+
+
+hostname = "localhost:"+port
+db       = content[0]
+user     = content[2]
+password = content[3]
+
+
+
+print (hostname)
+print (db)
+print (user)
+print (password)
+
+
+#mydb = mysql.connector.connect()
