@@ -16,14 +16,18 @@ content = [c.split('=')[1] for c in content if c != '']
 hostname = "localhost:"+port
 db       = content[0]
 user     = content[2]
-password = content[3]
+pw       = content[3]
 
 
 
-print (hostname)
-print (db)
-print (user)
-print (password)
+mydb = mysql.connector.connect(
+	host     = hostname,
+	user     = user,
+	password = pw,
+	database = db
+)
 
 
-#mydb = mysql.connector.connect()
+mycursor = mydb.cursor()
+
+mycursor.execute('CREATE TABLE ...')
