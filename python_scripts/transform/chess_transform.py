@@ -58,3 +58,4 @@ def personalize(df: pd.core.frame.DataFrame, user: str) -> pd.core.frame.DataFra
 	ordered_columns = first_columns + last_columns + [c for c in df.columns if c not in (first_columns+last_columns)]
 	df = df[ordered_columns]
 	return df.drop(disposable_columns, axis=1)
+

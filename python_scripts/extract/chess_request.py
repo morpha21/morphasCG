@@ -15,14 +15,14 @@ def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame
 	print(f"\rrequesting game data from {month}/{year}... ", end=' ')
 	headers = {'User-Agent': email}
 	response = rq.get(url, headers=headers)
-
+	while response.status_code == 429:
+		response = rq.get(url, headers=headers)
 	if response.status_code == 200:
 		game_json = response.json()
 		df = pd.DataFrame(list(json_normalize(game_json)))
 		return df
-	else:
-		print(f'Error: {response.status_code}')
-		return None
+	print(f'Error: {response.status_code}')
+	return None
 
 
 

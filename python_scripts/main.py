@@ -1,28 +1,38 @@
+import concurrent.futures
 from datetime import datetime
+
 import pandas as pd
 
-from extract.chess_request import request_games
 import transform.chess_transform as ct
+from extract.chess_request import request_games
+
+
+def worker(year_,user_,email_):
+	df_list = []
+	current_month = datetime.now().month
+	global current_year
+
+	for month in range(1, 13):
+		df = request_games(year_, month, user_, email_)
+		df_list += [df]
+		if (year_ == current_year) and (month == current_month):
+			break
+	return pd.concat(df_list)
+
 
 
 current_year = datetime.now().year
-current_month = datetime.now().month
-user  = "morpha_21"
-email = ""
-
+user         = "morpha_21"
+email        = ""
 
 with open("extract/.email", 'r') as email_file:
 	email = email_file.read().strip()
 
-
-df_list = []
-
-for year in range(2023, current_year+1):
-	for month in range(1, 13):
-		df = request_games(year, month, user, email)
-		df_list += [df]
-		if (year == current_year) and (month == current_month):
-			break
+with concurrent.futures.ThreadPoolExecutor() as executor:
+	futures = []
+	for year in range(2020, current_year+1):
+			futures += [executor.submit(worker, year, user, email)]
+	df_list = [f.result() for f in futures]
 
 df = pd.concat(df_list)
 df = ct.adequate(df)
@@ -30,20 +40,12 @@ df.sort_index(inplace=True)
 
 uuid = df[df['white_username'] == user]['white_uuid'].unique()[0]
 
-
-df = ct.personalize(df, user)
-
-
-
-
-print("\nColumns:")
-for i in df.columns:
-	print(i)
+df   = ct.personalize(df, user)
 
 print()
 print(df)
 
 
-
+df.to_csv(f"{user}_chess_games.csv")
 
 
