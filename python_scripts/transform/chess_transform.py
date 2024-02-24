@@ -21,7 +21,6 @@ def adequate(df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
 	if df.empty:
 		return df
 	df.columns = format_columns(df.columns)
-	df['draw'] = (df['white_result'] == df['black_result'])
 	first_cols   = [col for col in
 			['white_username', 'white_uuid', 'white_result', 'white_rating',
 			'black_username', 'black_uuid', 'black_result', 'black_rating']
@@ -42,15 +41,15 @@ def personalize(df: pd.core.frame.DataFrame, user: str) -> pd.core.frame.DataFra
 	if not personalizable:
 		print(f'Not all games are from {user}')
 		return df
-
-	df['played_as']           = np.where(df['white_username'] == user, 'white', 'black')
-	df['against']             = np.where(df['white_username'] == user, 'black', 'white')
-	df['opponent']            = np.where(df['played_as'] == 'white', df['black_username'], df['white_username'])
-	df['opponent_uuid']       = np.where(df['played_as'] == 'white', df['black_uuid'], df['white_uuid'])
-	df['rating']              = np.where(df['played_as'] == 'white', df['white_rating'], df['black_rating'])
-	df['opponent_rating']     = np.where(df['played_as'] == 'black', df['white_rating'], df['black_rating'])
-	df['result']              = np.where(df['played_as'] == 'white', df['white_result'], df['black_result'])
-	df['opponent_result']     = np.where(df['played_as'] == 'black', df['white_result'], df['black_result'])
+	df['played_as']       = np.where(df['white_username'] == user, 'white', 'black')
+	df['against']         = np.where(df['white_username'] == user, 'black', 'white')
+	df['opponent']        = np.where(df['played_as'] == 'white', df['black_username'], df['white_username'])
+	df['opponent_uuid']   = np.where(df['played_as'] == 'white', df['black_uuid'], df['white_uuid'])
+	df['rating']          = np.where(df['played_as'] == 'white', df['white_rating'], df['black_rating'])
+	df['opponent_rating'] = np.where(df['played_as'] == 'black', df['white_rating'], df['black_rating'])
+	df['result']          = np.where(df['played_as'] == 'white', df['white_result'], df['black_result'])
+	df['opponent_result'] = np.where(df['played_as'] == 'black', df['white_result'], df['black_result'])
+	df['draw']            = (df['result'] == df['opponent_result'])
 	if ('white_accuracies' in df.columns):
 		df['accuracies']          = np.where(df['played_as'] == 'white', df['white_accuracies'], df['black_accuracies'])
 		df['opponent_accuracies'] = np.where(df['played_as'] == 'black', df['white_accuracies'], df['black_accuracies'])
