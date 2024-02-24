@@ -21,6 +21,7 @@ def adequate(df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
 	if df.empty:
 		return df
 	df.columns = format_columns(df.columns)
+	df['draw'] = (df['white_result'] == df['black_result'])
 	first_cols   = [col for col in
 			['white_username', 'white_uuid', 'white_result', 'white_rating',
 			'black_username', 'black_uuid', 'black_result', 'black_rating']

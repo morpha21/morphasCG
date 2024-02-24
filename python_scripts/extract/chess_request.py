@@ -1,11 +1,13 @@
 """
 this module only provides functions to request data from a chess API
 """
-
+from time import sleep
 
 import requests as rq
 import pandas as pd
 from json_normalize import json_normalize
+
+
 
 def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame.DataFrame:
 	"""gets chess data from chess.com"""
@@ -17,6 +19,7 @@ def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame
 	response = rq.get(url, headers=headers)
 	while response.status_code == 429:
 		response = rq.get(url, headers=headers)
+		sleep(0.618)
 	if response.status_code == 200:
 		game_json = response.json()
 		df = pd.DataFrame(list(json_normalize(game_json)))
