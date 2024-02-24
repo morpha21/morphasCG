@@ -26,6 +26,20 @@ def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame
 
 
 
+def get_user(user: str, email:str) -> pd.core.frame.DataFrame:
+	"""gets data from a given chess.com user"""
+	url= f"https://api.chess.com/pub/player/{user}/stats"
+	headers = {'User-Agent': email}
+	response = rq.get(url, headers=headers)
+	if response.status_code == 200:
+		user_json = response.json()
+		disposable_keys = [el for el in ['tactics', 'puzzle_rush'] if el in  user_json.keys()]
+		for key in disposable_keys:
+			del user_json[key]
+		return pd.DataFrame(list(json_normalize(user_json)))
+	else:
+		print(f'Error: {response.status_code}')
+		return None
 
 
 

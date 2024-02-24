@@ -5,6 +5,7 @@ import pandas as pd
 
 import transform.chess_transform as ct
 from extract.chess_request import request_games
+from extract.chess_request import get_user
 
 
 def worker(year_,user_,email_):
@@ -44,6 +45,20 @@ df   = ct.personalize(df, user)
 
 print()
 print(df)
+
+
+
+opponents = [get_user(opponent, email) for opponent in df['opponent'][:10]]
+
+print()
+print(opponents)
+print()
+
+
+
+
+
+
 
 
 df.to_csv(f"{user}_chess_games.csv")

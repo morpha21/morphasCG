@@ -3,6 +3,9 @@ import numpy as np
 
 from datetime import datetime
 
+
+
+
 def format_columns(columns: pd.core.indexes.base.Index) -> list:
 	"""receives thecolumns of a DataFrame and returns a list with more suitable
 	column names"""
@@ -10,23 +13,27 @@ def format_columns(columns: pd.core.indexes.base.Index) -> list:
 
 
 
-# less columns should be disposable in the future
-disposable_columns = ['initial_setup', 'rated', 'rules', 'white_id', 'black_id',
-			   'start_time', 'pgn', 'tcn', 'uuid', 'fen',
-			   'end_time', 'tournament']
-
 
 def adequate(df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
+	disposable_columns = ['initial_setup', 'rated', 'rules', 'white_id', 'black_id',
+				   'start_time', 'pgn', 'tcn', 'uuid', 'fen',
+				   'end_time', 'tournament']
 	if df.empty:
 		return df
 	df.columns = format_columns(df.columns)
-	first_cols   = [col for col in ['white_username', 'white_uuid', 'white_result', 'white_rating',
-		        'black_username', 'black_uuid', 'black_result', 'black_rating'] if col in df.columns]
-	last_cols    = [col for col in ['accuracies_white', 'accuracies_black', 'url'] if col in df.columns]
+	first_cols   = [col for col in
+			['white_username', 'white_uuid', 'white_result', 'white_rating',
+			'black_username', 'black_uuid', 'black_result', 'black_rating']
+			if col in df.columns]
+	last_cols    = [col for col in
+			['accuracies_white', 'accuracies_black', 'url']
+			if col in df.columns]
 	ordered_cols = first_cols + [col for col in df.columns if (col not in first_cols) and (col not in last_cols)] + last_cols
 	df = df[ordered_cols]
 	df.index = df['end_time'].apply(datetime.fromtimestamp)
 	return df.drop([col for col in disposable_columns if col in df.columns], axis=1)
+
+
 
 def personalize(df: pd.core.frame.DataFrame, user: str) -> pd.core.frame.DataFrame:
 	personalizable = df.apply(lambda row: user in row['white_username'] or user in row['black_username'], axis=1).all()
