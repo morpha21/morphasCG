@@ -46,9 +46,9 @@ df   = ct.personalize(df, user)
 print()
 print(df)
 
+l = 1 + len(df['opponents'])//6
 
-
-opponents = [get_user(opponent, email) for opponent in df['opponent'][:10]]
+opponents = [df['opponent'][l*i:l*(i+1)] for i in range(0,7)]
 
 print()
 print(opponents)
