@@ -22,7 +22,7 @@ from extract.chess_request import request_games
 from extract.chess_request import get_user
 
 
-def worker(year_,user_,email_):
+def worker(year_,user_):
 	df_list = []
 	global end_date
 	global start_date
@@ -31,7 +31,7 @@ def worker(year_,user_,email_):
 		if (year == start_date.year) and (month < start_date.month):
 			continue
 
-		df = request_games(year_, month, user_, email_)
+		df = request_games(year_, month, user_)
 		df_list += [df]
 		
 		if (year_ == end_date.year) and (month == end_date.month):
@@ -42,15 +42,13 @@ def worker(year_,user_,email_):
 user       = argv[1]
 start_date = datetime.strptime(argv[2], "%Y/%m") if len(argv) > 2 else datetime(2015, 1, 1)
 end_date = datetime.strptime(argv[3], "%Y/%m") if len(argv) > 3 else datetime.now()
-email        = ""
 
-with open("extract/.email", 'r') as email_file:
-	email = email_file.read().strip()
+
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
 	futures = []
 	for year in range(start_date.year, end_date.year+1):
-			futures += [executor.submit(worker, year, user, email)]
+			futures += [executor.submit(worker, year, user)]
 	df_list = [f.result() for f in futures]
 
 df = pd.concat(df_list)

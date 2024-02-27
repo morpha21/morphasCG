@@ -2,8 +2,12 @@ from time import sleep
 
 import pandas as pd
 import requests as rq
+from  pathlib import Path
 
-def request_json(url: str, email: str) -> dict:
+with open(f"{Path(__file__).parent}/.email", 'r') as email_file:
+	email = email_file.read().strip()
+
+def request_json(url: str, email: str = email) -> dict:
 	headers={'User-Agent': email}
 	response = rq.get(url, headers=headers)
 	while response.status_code == 429:
@@ -14,7 +18,7 @@ def request_json(url: str, email: str) -> dict:
 	print(f'Error: {response.status_code}')
 	return None
 
-def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame.DataFrame:
+def request_games(year: int, month: int, user: str, email: str = email) -> pd.core.frame.DataFrame:
 	"""gets chess data from chess.com"""
 	year  = str(year)
 	month = ("0"+str(month))[-2:]
@@ -27,7 +31,7 @@ def request_games(year: int, month: int, user: str, email: str) -> pd.core.frame
 
 
 
-def get_user(user: str, email:str) -> pd.core.frame.DataFrame:
+def get_user(user: str, email: str = email) -> pd.core.frame.DataFrame:
 	"""gets data from a given chess.com user"""
 	url= f"https://api.chess.com/pub/player/{user}/"
 	user_json = request_json(url, email)
