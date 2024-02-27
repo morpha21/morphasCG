@@ -1,3 +1,6 @@
+from sys import argv
+
+
 import concurrent.futures
 from datetime import datetime
 
@@ -31,7 +34,7 @@ with open("extract/.email", 'r') as email_file:
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
 	futures = []
-	for year in range(2020, current_year+1):
+	for year in range(2023, current_year+1):
 			futures += [executor.submit(worker, year, user, email)]
 	df_list = [f.result() for f in futures]
 
@@ -46,7 +49,7 @@ df   = ct.personalize(df, user)
 print()
 print(df)
 
-l = 1 + len(df['opponents'])//6
+l = 1 + len(df['opponent'])//6
 
 opponents = [df['opponent'][l*i:l*(i+1)] for i in range(0,7)]
 
