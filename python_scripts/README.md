@@ -1,7 +1,7 @@
 # Python Scripts
 
-Currently, the `load_to_csv.py` script is able to generate a `.csv` file with all matches from a given player in a given period of time. 
-It is supposed to be used like this: 
+Currently, the `load_to_csv.py` script is able to generate a `.csv` file with all matches from a given player in a given period of time. Be aware that there should be a file named
+`.email` inside `extract` directory containing an e-mail address in order to the requests not to fail. It is supposed to be used like this: 
 
 ```$ python load_to_csv.py <user_name> <start_date> <end_date>```
 
