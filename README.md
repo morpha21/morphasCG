@@ -1,34 +1,12 @@
 # Morpha's Chess Games
 
-My aim in this project is to hone my skills in ETL processes. I intend to do it by 
-automating a data pipeline that collects data from all my chess games on chess.com.
+The idea here is to extract chess data from an API, process, and store it to a database. 
 
-The plan is:
+Currently, the Python code inside `python_scripts` directory is able to make concurrent requests
+to chess.com's API and process the data to save it to a CSV file. For more details, check README
+file inside. 
 
-1. to have a init.sh that sets everything up; 
+The `infrastructure` directory contains code relative to SQL databases on Docker containers, using
+Dockercompose, where I want to store the data. The usage of containers here are mostly for ease
+of use for prototyping and will possibly be replaced in the future.
 
-2. a python software that checks for new games on chess.com, request new data, put it 
-into a database, process it and save to another database.
-
-3. A telegram bot that regularly sends some analytics to a number 
-
-I'm planning to use at least the following tools to do it:
-
-- MySQL (on a container)
-- Docker
-- Docker-compose
-- AirFlow
-- Python
-
-I may or may not use more tools in the future, or fewer tools, or substitute some of them 
-for more adequate alternatives as I gain more knowledge.
-
-
-## Current status: 
-- `data` directory is supposed to be the volume shared by host and containers;
-- `mysql` contains data used by mysql container; 
-- `mysql2` contains data used by mysql2 container; 
-- `python_scripts` contains the ETL Python code, currently only able to get data from 
-chess.com's API;
-- `docker-compose.yml` is able to run containers, getting variables and ports from .env 
-files.
