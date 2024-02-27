@@ -40,7 +40,7 @@ def worker(year_,user_,email_):
 
 
 user       = argv[1]
-start_date = datetime.strptime(argv[2], "%Y/%m")
+start_date = datetime.strptime(argv[2], "%Y/%m") if len(argv) > 2 else datetime(2015, 1, 1)
 end_date = datetime.strptime(argv[3], "%Y/%m") if len(argv) > 3 else datetime.now()
 email        = ""
 
@@ -66,11 +66,8 @@ print(df)
 
 l = 1 + len(df['opponent'])//6
 
-opponents = [df['opponent'][l*i:l*(i+1)] for i in range(0,7)]
+opponent_batches = [df['opponent'][l*i:l*(i+1)] for i in range(0,7)]
 
-print()
-print(opponents)
-print()
 
 
 
