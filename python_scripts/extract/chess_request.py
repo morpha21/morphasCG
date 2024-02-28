@@ -4,8 +4,14 @@ import pandas as pd
 import requests as rq
 from  pathlib import Path
 
-with open(f"{Path(__file__).parent}/.email", 'r') as email_file:
-	email = email_file.read().strip()
+email = ""
+
+try:
+	with open(f"{Path(__file__).parent}/.email", 'r') as email_file:
+		email = email_file.read().strip()
+except:
+	email = "you_forgot_your@email.com"
+
 
 def request_json(url: str, email: str = email) -> dict:
 	headers={'User-Agent': email}
@@ -25,7 +31,7 @@ def request_games(year: int, month: int, user: str, email: str = email) -> pd.co
 	print(f"\rrequesting game data from {month}/{year}... ", end=' ')
 
 	url   = f"https://api.chess.com/pub/player/{user}/games/{year}/{month}"
-	
+
 	return pd.json_normalize(request_json(url, email)['games'])
 
 
@@ -39,10 +45,9 @@ def get_user(user: str, email: str = email) -> pd.core.frame.DataFrame:
 	for key in disposable_keys:
 		del user_json[key]
 	return pd.json_normalize(user_json)
-	
+
 
 def get_user_country(user: str, email:str) -> str:
 	"""Gets the country of a user"""
 	url= f"https://api.chess.com/pub/player/{user}/"
 	return request_json(url, email)['country'].split("/")[-1]
-	
