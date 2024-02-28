@@ -7,6 +7,6 @@ to chess.com's API and process the data to save it to a CSV file. For more detai
 file inside. 
 
 The `infrastructure` directory contains code relative to SQL databases on Docker containers, using
-Dockercompose, where I want to store the data. The usage of containers here are mostly for ease
+Dockercompose, where I want to store the data in the future. The usage of containers here are mostly for ease
 of use for prototyping and will possibly be replaced in the future.
 
