@@ -53,14 +53,26 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 
 df = pd.concat(df_list)
 df = ct.adequate(df)
+
+user = (
+	df['white_username'][0]
+	if df['white_username'][0].lower() == user.lower()
+	else df['black_username'][0]
+	)
+
+
 df.sort_index(inplace=True)
 
-uuid = df[df['white_username'] == user]['white_uuid'].unique()[0]
+if len(df[df['black_username'] == user]['black_uuid'].unique()) > 0:
+	uuid = df[df['black_username'] == user]['black_uuid'].unique()[0]
 
 df   = ct.personalize(df, user)
 
 print()
 print(df)
+df.to_csv(f"{user}_chess_games.csv")
+
+
 
 l = 1 + len(df['opponent'])//6
 
