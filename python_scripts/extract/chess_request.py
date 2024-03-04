@@ -11,7 +11,7 @@ try:
 		email = email_file.read().strip()
 except:
 	email = "you_forgot_your@email.com"
-
+	print(f"\nusing {email} as email address to request data from chess.com\n")
 
 def request_json(url: str, email: str = email) -> dict:
 	headers={'User-Agent': email}

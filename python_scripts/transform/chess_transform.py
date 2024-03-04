@@ -15,9 +15,11 @@ def format_columns(columns: pd.core.indexes.base.Index) -> list:
 
 
 def adequate(df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
-	disposable_columns = ['initial_setup', 'rated', 'rules', 'white_id', 'black_id',
-				   'start_time', 'pgn', 'tcn', 'uuid', 'fen',
-				   'end_time', 'tournament']
+	disposable_columns = [
+		'pgn','rated','tcn','start_time'
+		'white_id','black_id','end_time','uuid',
+		'initial_setup','tournament','rules','fen'
+		]
 	if df.empty:
 		return df
 	df.columns = format_columns(df.columns)

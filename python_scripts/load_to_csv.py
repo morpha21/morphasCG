@@ -22,21 +22,10 @@ from extract.chess_request import request_games
 from extract.chess_request import get_user
 
 
-def worker(year_,user_):
-	df_list = []
-	global end_date
-	global start_date
+from extract.concurrency import worker
+from extract.concurrency import execute
 
-	for month in range(1, 13):
-		if (year == start_date.year) and (month < start_date.month):
-			continue
 
-		df = request_games(year_, month, user_)
-		df_list += [df]
-		
-		if (year_ == end_date.year) and (month == end_date.month):
-			break
-	return pd.concat(df_list)
 
 
 user       = argv[1]
@@ -44,12 +33,7 @@ start_date = datetime.strptime(argv[2], "%Y/%m") if len(argv) > 2 else datetime(
 end_date = datetime.strptime(argv[3], "%Y/%m") if len(argv) > 3 else datetime.now()
 
 
-
-with concurrent.futures.ThreadPoolExecutor() as executor:
-	futures = []
-	for year in range(start_date.year, end_date.year+1):
-			futures += [executor.submit(worker, year, user)]
-	df_list = [f.result() for f in futures]
+df_list = execute(user, start_date, end_date)
 
 df = pd.concat(df_list)
 df = ct.adequate(df)
@@ -69,23 +53,18 @@ if len(df[df['black_username'] == user]['black_uuid'].unique()) > 0:
 df   = ct.personalize(df, user)
 
 print()
-print(df)
+
+
+# l = 1 + len(df['opponent'].unique())//6
+
+# opponent_batches = [df['opponent'].unique()[l*i:l*(i+1)] for i in range(0,6)]
+
+# print()
+
+# for i in opponent_batches:
+# 	print(len(i))
+# 	print(i[0:6])
+# 	print()
+
+print(f"total: {len(df.opponent.unique())}")
 df.to_csv(f"{user}_chess_games.csv")
-
-
-
-l = 1 + len(df['opponent'])//6
-
-opponent_batches = [df['opponent'][l*i:l*(i+1)] for i in range(0,7)]
-
-
-
-
-
-
-
-
-
-df.to_csv(f"{user}_chess_games.csv")
-
-
